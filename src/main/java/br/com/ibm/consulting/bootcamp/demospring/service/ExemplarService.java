@@ -22,15 +22,17 @@ public class ExemplarService {
         Livro livro = repository.findById(id).orElse(null);
         if (livro == null) {
             return null;
+        } else if (exemplar.getQuantidade() <= 0) {
+            return null;
         }
         Exemplar exemplarExistente = exemplarRepository.findByLivro(livro);
         if (exemplarExistente != null) {
-            exemplarExistente.setQuantidade(exemplarExistente.getQuantidade() + 1);
+            exemplarExistente.setQuantidade(exemplarExistente.getQuantidade() + exemplar.getQuantidade());
             return exemplarRepository.save(exemplarExistente);
         } else {
             Exemplar novoExemplar = new Exemplar();
             novoExemplar.setLivro(livro);
-            novoExemplar.setQuantidade(1);
+            novoExemplar.setQuantidade(exemplar.getQuantidade());
             return exemplarRepository.save(novoExemplar);
         }
     }

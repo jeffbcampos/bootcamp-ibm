@@ -3,7 +3,9 @@ package br.com.ibm.consulting.bootcamp.demospring.service;
 import java.util.List;
 
 import br.com.ibm.consulting.bootcamp.demospring.domain.Exemplar;
+import br.com.ibm.consulting.bootcamp.demospring.domain.Reserva;
 import br.com.ibm.consulting.bootcamp.demospring.repository.ExemplarRepository;
+import br.com.ibm.consulting.bootcamp.demospring.repository.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +18,11 @@ public class LivroService {
 	@Autowired
 	LivroRepository repository;
 
+	@Autowired
+	ReservaRepository reservaRepository;
 
+	@Autowired
+	ExemplarRepository exemplarRepository;
 	
 	public Livro criarLivro(Livro l) {
 		return repository.saveAndFlush(l);
@@ -36,8 +42,23 @@ public class LivroService {
 	}
 	
 	public void excluir(long id) {
-		var excluir = new Livro(id, null, null, null);
-		repository.delete(excluir);
+		Livro livro = repository.findById(id).orElse(null);
+		if (livro != null) {
+
+			List<Reserva> reservas = reservaRepository.findByLivro(livro);
+			Exemplar exemplar = exemplarRepository.findByLivro(livro);
+
+			if (reservas.isEmpty() && exemplar == null) {
+				repository.delete(livro);
+			} else {
+
+				reservaRepository.deleteAll(reservas);
+				if (exemplar != null) {
+					exemplarRepository.delete(exemplar);
+				}
+				repository.delete(livro);
+			}
+		}
 	}
 
 }
