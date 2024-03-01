@@ -6,6 +6,7 @@ import br.com.ibm.consulting.bootcamp.demospring.domain.Reserva;
 import br.com.ibm.consulting.bootcamp.demospring.repository.ExemplarRepository;
 import br.com.ibm.consulting.bootcamp.demospring.repository.LivroRepository;
 import br.com.ibm.consulting.bootcamp.demospring.repository.ReservaRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +23,7 @@ public class ReservaService {
 
     @Autowired
     LivroRepository livroRepository;
-
+    @Transactional
     public Reserva criarReserva(long id, Reserva reserva) {
         Livro livro = livroRepository.findById(id).orElse(null);
         if (livro == null) {

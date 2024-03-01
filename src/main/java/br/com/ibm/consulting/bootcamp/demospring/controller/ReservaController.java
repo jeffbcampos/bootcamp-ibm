@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/livros")
+@CrossOrigin(origins = "*")
 public class ReservaController {
 
     @Autowired

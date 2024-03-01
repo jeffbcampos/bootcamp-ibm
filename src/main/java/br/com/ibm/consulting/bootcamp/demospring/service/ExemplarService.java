@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class ExemplarService {
 
@@ -16,6 +18,10 @@ public class ExemplarService {
 
     @Autowired
     LivroRepository repository;
+
+    public List<Exemplar> listar() {
+        return exemplarRepository.findAll();
+    }
 
     public Exemplar adicionarExemplar(long id, Exemplar exemplar) {
 
@@ -27,7 +33,7 @@ public class ExemplarService {
         }
         Exemplar exemplarExistente = exemplarRepository.findByLivro(livro);
         if (exemplarExistente != null) {
-            exemplarExistente.setQuantidade(exemplarExistente.getQuantidade() + exemplar.getQuantidade());
+            exemplarExistente.setQuantidade(exemplar.getQuantidade());
             return exemplarRepository.save(exemplarExistente);
         } else {
             Exemplar novoExemplar = new Exemplar();

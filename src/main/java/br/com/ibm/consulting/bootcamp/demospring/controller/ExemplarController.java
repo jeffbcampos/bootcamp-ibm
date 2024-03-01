@@ -10,8 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/livros")
+@CrossOrigin(origins = "*")
 public class ExemplarController {
 
     @Autowired
@@ -22,6 +25,11 @@ public class ExemplarController {
 
     @Autowired
     LivroService service;
+
+    @GetMapping("/exemplares")
+    public List<Exemplar> listar() {
+        return exemplarService.listar();
+    }
 
     @PostMapping("/{id}/exemplares")
     public ResponseEntity<Exemplar> adicionarExemplar(@PathVariable long id, @RequestBody Exemplar exemplar) {

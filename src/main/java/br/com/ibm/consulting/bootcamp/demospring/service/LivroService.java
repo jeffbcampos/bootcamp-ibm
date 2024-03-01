@@ -6,6 +6,7 @@ import br.com.ibm.consulting.bootcamp.demospring.domain.Exemplar;
 import br.com.ibm.consulting.bootcamp.demospring.domain.Reserva;
 import br.com.ibm.consulting.bootcamp.demospring.repository.ExemplarRepository;
 import br.com.ibm.consulting.bootcamp.demospring.repository.ReservaRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ public class LivroService {
 	
 	@Autowired
 	LivroRepository repository;
+
 
 	@Autowired
 	ReservaRepository reservaRepository;
@@ -40,7 +42,7 @@ public class LivroService {
 		var alterado = new Livro(id, novoLivro.getAutor(), novoLivro.getTitulo(), novoLivro.getAnoPublicacao());
 		repository.saveAndFlush(alterado);
 	}
-	
+	@Transactional
 	public void excluir(long id) {
 		Livro livro = repository.findById(id).orElse(null);
 		if (livro != null) {
@@ -60,5 +62,4 @@ public class LivroService {
 			}
 		}
 	}
-
 }
